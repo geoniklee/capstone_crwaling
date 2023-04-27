@@ -25,19 +25,12 @@ for i in range(1):
     try:
         to_scroll=driver.find_element(By.XPATH,'/html/body/div[3]/div[9]/div[9]/div/div/div[1]/div[3]/div/div[1]/div/div/div[3]')
     except:
-        try:
-            to_scroll=driver.find_element(By.XPATH,'/html/body/div[3]/div[9]/div[9]/div/div/div[1]/div[2]/div/div[1]/div/div/div[3]')
-        except:
-            continue
+        to_scroll=driver.find_element(By.XPATH,'/html/body/div[3]/div[9]/div[9]/div/div/div[1]/div[2]/div/div[1]/div/div/div[3]')
 
     #review 총 몇개 크롤링할지
     review_total=1000
     #리뷰 데이터 담을 리스트
-    # result_list = []
-    #리뷰 데이터 쓴 사람 아이디
-    result_list_name = []
-    #리뷰 데이터 쓴사람의 별점
-    result_list_user_grade = []
+    result_list = []
 
     while(True):
         driver.execute_script("arguments[0].scrollBy(0,2000)", to_scroll)
@@ -54,30 +47,12 @@ for i in range(1):
         if (len(breaks)>=review_total):
             break
     #리뷰 담기
-    # to_adds=driver.find_elements(By.CLASS_NAME,'wiI7pd')
-    #닉네임갖고오기
-    to_adds_names=driver.find_elements(By.CLASS_NAME,'d4r55')
-    #유저별점갖고오기
-    to_user_grade=driver.find_elements(By.CLASS_NAME,'hCCjke.vzX5Ic')
-    # for add in to_adds:
-    #     result_list.append(add.text)
-    for add_name in to_adds_names:
-        result_list_name.append(add_name.text)
+    to_adds=driver.find_elements(By.CLASS_NAME,'wiI7pd')
 
-    filled_star_url = "//maps.gstatic.com/consumer/images/icons/2x/ic_star_rate_14.png"
-    #유저별점갖고오기
-
-    aaa = driver.find_elements(By.CLASS_NAME, 'kvMYJc')
-    for add_grade in aaa:
-        soup = BeautifulSoup(add_grade.get_attribute('innerHTML'), 'html.parser')
-        filled_star_count = len(soup.find_all('img', {'src': filled_star_url}))
-        result_list_user_grade.append(filled_star_count)
+    for add in to_adds:
+        result_list.append(add.text)
 
     # csv로 저장
-    # df = pd.DataFrame(result_list)
-    df1 = pd.DataFrame(result_list_name)
-    df2 = pd.DataFrame(result_list_user_grade)
-    # df.to_csv(names[i]+".csv",index=False)
-    df1.to_csv(names[i]+"_ID.csv",index=False)
-    df2.to_csv(names[i]+"_user_grade",index=False)
+    df = pd.DataFrame(result_list)
+    df.to_csv(names[i]+".csv",index=False)
     print(names[i])
